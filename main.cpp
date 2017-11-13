@@ -22,30 +22,72 @@ class monster{
 };
 
 //Prototypes
-void menu(char &);
+void mainMenu(char &);
 void runGame();
 character createCharacter(string, character &);
 int randomNumber(unsigned int, unsigned int);
+void menu(int &locate);
 
 int main(){
+        //Seed the random number generator
         srand( time(NULL));
         char input;
         string name;
         character player;
+        vector <string> inventory;
+        //Locator value so the program knows where the player is
+        int locate = 0;
 
-        //Menu to get started
-        menu(input);
+
+
+                //Menu to get started
+                mainMenu(input);
         if (input == 'q' || input == 'Q'){
                 return 0;
         }
+
+
         //Name for the player
-        cout << "Please enter a character name:";
+        cout << "\nPlease enter a character name:";
         cin >> name;
 
         //This function creates the object used for battling
         createCharacter(name, player);
 
-  return 0;
+        //Let the game begin
+        menu(locate);
+        return 0;
+}
+
+void menu (int &locate){
+        //Town
+        if (locate = 0){
+
+        }
+        //Shop
+        if (locate = 1){
+
+        }
+        //Forest
+        if (locate = 2){
+
+        }
+        //Desert
+        if (locate = 3){
+
+        }
+        //Mountains
+        if (locate = 4){
+
+        }
+        //Graveyard
+        if (locate = 5){
+
+        }
+        //End of game tomb
+        if (locate = 6){
+
+        }
 }
 
 character createCharacter(string name, character &player){
@@ -97,7 +139,7 @@ void runGame(){
         cout << "in the mountains.\nFor now you can't enter the tomb. Find the key and take what is yours!\n";
 }
 
-void menu(char &input){
+void mainMenu(char &input){
         string name;
 
         do{
