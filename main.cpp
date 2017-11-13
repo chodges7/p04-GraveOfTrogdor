@@ -19,6 +19,8 @@ class monster{
         public:
                 int health;
                 int attack;
+                int speed;
+                int gold;
 };
 
 //Prototypes
@@ -27,6 +29,11 @@ void runGame();
 character createCharacter(string, character &);
 int randomNumber(unsigned int, unsigned int);
 void menu(int &locate);
+void go(int locate);
+void search(int locate);
+void use(locate);
+void list();
+void talk(int locate);
 
 int main(){
         //Seed the random number generator
@@ -40,8 +47,8 @@ int main(){
 
 
 
-                //Menu to get started
-                mainMenu(input);
+        //Menu to get started
+        mainMenu(input);
         if (input == 'q' || input == 'Q'){
                 return 0;
         }
@@ -60,33 +67,85 @@ int main(){
 }
 
 void menu (int &locate){
+        string input;
+        fight monster;
+
         //Town
         if (locate = 0){
-
+                cout << "You're in the town. What will you do?\n";
+                cin >> input;
+                if (input == "go" || input == "GO"){
+                        go(locate);
+                }
+                else if (input == "search" || input == "SEARCH"){
+                        search(locate);
+                }
+                else if (input == "use" || input == "USE"){
+                        use(locate);
+                }
+                else if (input == "list" || input == "LIST"){
+                        list(); 
+                }
+                else if (input == "talk" || input == "TALK"){
+                        talk(locate);
+                }
         }
         //Shop
         if (locate = 1){
-
+                cout << "You're in the shop. What will you do?\n";
+                if (input == "go" || input == "GO"){
+                        go(locate);
+                }
+                else if (input == "search" || input == "SEARCH"){
+                        search(locate);
+                }
+                else if (input == "use" || input == "USE"){
+                        use(locate);
+                }
+                else if (input == "list" || input == "LIST"){
+                        list();
+                }
+                else if (input == "talk" || input == "TALK"){
+                        talk(locate);
+                }
         }
         //Forest
         if (locate = 2){
-
+                cout << "You are in the forest. Beware of bunnies.\n";
+                monster.bunny(); 
         }
         //Desert
         if (locate = 3){
-
+                cout << "You are in the desert. Beware of Scorpions.\n";
+                monster.scorpion(); 
         }
         //Mountains
         if (locate = 4){
-
+                cout << "You are in the mountains. Beware of trolls.\n";
+                monster.troll(); 
         }
         //Graveyard
         if (locate = 5){
-
+                cout << "You are at the graveyard. What will you do?\n";
+                if (input == "go" || input == "GO"){
+                        go(locate);
+                }
+                else if (input == "search" || input == "SEARCH"){
+                        search(locate);
+                }
+                else if (input == "use" || input == "USE"){
+                        use(locate);
+                }
+                else if (input == "list" || input == "LIST"){
+                        list();
+                }
+                else if (input == "talk" || input == "TALK"){
+                        talk(locate);
+                }
         }
         //End of game tomb
         if (locate = 6){
-
+                cout << "You are in Trogdor's tomb. You claim the riches! Thank you for playing!"
         }
 }
 
@@ -148,7 +207,8 @@ void mainMenu(char &input){
                 cin >> input;
                 if (input == 'i' || input == 'I'){
                         cout << "\nSimilar to old fashioned video games, this is a little RPG that takes\n";
-                        cout << "input commands. List of possible commands listed below:\n\n";
+                        cout << "input commands. Unlike old fashioned video games, you have to enter the\n";
+                        cout << "seperate words as seperate commands. List of possible commands listed below:\n\n";
                         cout << "go north (or any other cardinal direction)\nsearch 'name'\nuse 'item'\nlist inventory\ntalk 'person'\n";
                 }
                 else if (input == 'l' || input == 'L'){
