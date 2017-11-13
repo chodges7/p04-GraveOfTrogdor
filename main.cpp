@@ -7,63 +7,85 @@
 
 using namespace std;
 
-//Prototypes
-void menu();
-void runGame();
-vector <int> createCharacter(string);
+//Classes
+class character{
+        public:
+                int health;
+                int speed;
+                int attack;
+                int gold;
+};
+class monster{
+        public:
+                int health;
+                int attack;
+};
 
+//Prototypes
+void menu(char &);
+void runGame();
+character createCharacter(string, character &);
+int randomNumber(unsigned int, unsigned int);
 
 int main(){
         srand( time(NULL));
+        char input;
         string name;
-        vector <int> character;
+        character player;
 
         //Menu to get started
-        menu();
+        menu(input);
+        if (input == 'q' || input == 'Q'){
+                return 0;
+        }
         //Name for the player
         cout << "Please enter a character name:";
         cin >> name;
 
-        //This function creates the vector used for battling
-        character = createCharacter(name);
-        return 0;
+        //This function creates the object used for battling
+        createCharacter(name, player);
+
+  return 0;
 }
 
-vector <int> createCharacter(string name){
-        vector <int> character;
+character createCharacter(string name, character &player){
         int input;
+        bool done = false;
 
         cout << "\nWhat class would you like?\n";
-        cout << "(1)Fighter (5 atk 5 def 10 hp)\n(2)Rogue (7 atk 3 def 10 hp)\n(3)Knight (3 atk 7 def 10 hp)\n";
-        cin >> input;
+        cout << "(1)Fighter (5 atk 5 spd 10 hp)\n(2)Knight (7 atk 3 spd 10 hp)\n(3)Rouge (3 atk 7 spd 10 hp)\n";
         do {
+                cin >> input;
                 if (input == 1){
-                        character.push_back(5);
-                        character.push_back(5);
-                        character.push_back(10);
-                        character.push_back(15);
+                        player.health = 10;
+                        player.speed = 5;
+                        player.attack = 5;
+                        player.gold = 15;
                         cout << "Welcome " << name << " the fighter\n";
+                        done = true;
                 }
                 else if (input == 2){
-                        character.push_back(7);
-                        character.push_back(3);
-                        character.push_back(10);
-                        character.push_back(15);
-                        cout << "Welcome " << name << " the rogue\n";
+                        player.health = 10;
+                        player.speed = 3;
+                        player.attack = 7;
+                        player.gold = 15;
+                        cout << "Welcome " << name << " the knight\n";
+                        done = true;
                 }
                 else if (input == 3){
-                        character.push_back(3);
-                        character.push_back(7);
-                        character.push_back(10);
-                        character.push_back(15);
-                        cout << "Welcome " << name << " the knight\n";
+                        player.health = 10;
+                        player.speed = 7;
+                        player.attack = 3;
+                        player.gold = 15;
+                        cout << "Welcome " << name << " the rouge\n";
+                        done = true;
                 }
                 else{
                         cerr << "Please enter a valid selection\n";
                 }
         }
-        while (character.size() < 1);
-        return character;
+        while (done != true);
+        return player;
 }
 
 void runGame(){
@@ -75,8 +97,7 @@ void runGame(){
         cout << "in the mountains.\nFor now you can't enter the tomb. Find the key and take what is yours!\n";
 }
 
-void menu(){
-        char input;
+void menu(char &input){
         string name;
 
         do{
@@ -108,4 +129,13 @@ void menu(){
         }
         while (input != 'q' && input != 'Q');
         return ;
+}
+
+int randomNumber(unsigned int min, unsigned int max){
+        if (min > max){
+                int temp = max;
+                max = min;
+                min = max;
+        }
+        return rand() % (max + 1 - min) + min;
 }
