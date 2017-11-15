@@ -23,11 +23,13 @@ class Monster{
 		int gold;
 };
 
+Monster current;
+
 class enemy{
 	public:
-		void bunny(void);
-		void scorpion(void);
-		void troll(void);
+		void bunny(Monster &);
+		void scorpion(Monster &);
+		void troll(Monster &);
 };
 
 //Prototypes
@@ -35,16 +37,15 @@ void mainMenu(char &);
 void runGame();
 character createCharacter(string, character &);
 int randomNumber(unsigned int, unsigned int);
-void menu(int &locate);
+void menu(int &locate, character &);
+void go(int &locate);
 /*
-void go(int locate);
-void search(int locate);
-void use(locate);
-void list();
-void talk(int locate);
-*/
-void enemy::bunny(void);
-void fight(Monster);
+   void search(int locate);
+   void use(locate);
+   void list();
+   void talk(int locate);
+ */
+void fight(Monster &current, character &);
 
 bool gameWon = false;
 
@@ -55,6 +56,7 @@ int main(){
 	string name;
 	character player;
 	vector <string> inventory;
+
 	//Locator value so the program knows where the player is
 	int locate = 0;
 
@@ -75,77 +77,51 @@ int main(){
 	createCharacter(name, player);
 
 	//Let the game begin
-	while (gameWon != true){
-		menu(locate);
+	do {
+		menu(locate, player);
 	}
+	while (gameWon != true);
 	return 0;
 }
 
-void 
-
-void enemy::bunny(void){
-	Monster bunny;
-	bunny.health = 5;
-	bunny.attack = 2;
-	bunny.speed = 2;
-	bunny.gold = 10;
-	fight(bunny);
+void fight (Monster &current, character &player){
 	return ;
 }
 
-void enemy::scorpion(){
-	Monster scorpion;
-	scorpion.health = 15;
-	scorpion.attack = 7;
-	scorpion.speed = 5;
-	scorpion.gold = 20;
-	fight(scorpion);	
-	return ;
-}
-
-void enemy::troll(){
-	Monster troll;
-	troll.health = 35;
-	troll.attack = 10;
-	troll.speed = 5;
-	troll.gold = 0;
-	fight(troll);
-	return ;
-}
-
-void menu (int &locate){
+void menu (int &locate, character &player){
 	string input;
 	enemy monster;
 
 	//Town
-	if (locate = 0){
+	if (locate == 0){
 		cout << "You're in the town. What will you do?\n";
 		cin >> input;
-		/*		
-				if (input == "go" || input == "GO"){
-				go(locate);
-				}
-				else if (input == "search" || input == "SEARCH"){
-				search(locate);
-				}
-				else if (input == "use" || input == "USE"){
-				use(locate);
-				}
-				else if (input == "list" || input == "LIST"){
-				list(); 
-				}
-				else if (input == "talk" || input == "TALK"){
-				talk(locate);
-				}
+		if (input == "go" || input == "GO"){
+			go(locate);
+		}
+		/*
+		   else if (input == "search" || input == "SEARCH"){
+		   search(locate);
+		   }
+		   else if (input == "use" || input == "USE"){
+		   use(locate);
+		   }
+		   else if (input == "list" || input == "LIST"){
+		   list(); 
+		   }
+		   else if (input == "talk" || input == "TALK"){
+		   talk(locate);
+		   }
 		 */
 	}
 	//Shop
-	if (locate = 1){
+	else if (locate == 1){
 		cout << "You're in the shop. What will you do?\n";
+		cin >> input;
+		if (input == "go" || input == "GO"){
+			go(locate);
+		}
 		/*
-		   if (input == "go" || input == "GO"){
-		   go(locate);
-		   }
 		   else if (input == "search" || input == "SEARCH"){
 		   search(locate);
 		   }
@@ -161,27 +137,33 @@ void menu (int &locate){
 		 */
 	}
 	//Forest
-	if (locate = 2){
+	else if (locate == 2){
 		cout << "You are in the forest. Beware of bunnies.\n";
-		monster.bunny(); 
+		monster.bunny(current); 
+		fight(current, player);
+		locate = 0;
 	}
 	//Desert
-	if (locate = 3){
+	else if (locate == 3){
 		cout << "You are in the desert. Beware of Scorpions.\n";
-		monster.scorpion(); 
+		monster.scorpion(current);
+		fight(current, player); 
+		locate = 0;
 	}
 	//Mountains
-	if (locate = 4){
+	else if (locate == 4){
 		cout << "You are in the mountains. Beware of trolls.\n";
-		monster.troll(); 
+		monster.troll(current); 
+		fight(current, player);
+		locate = 0;
 	}
 	//Graveyard
-	if (locate = 5){
+	else if (locate == 5){
 		cout << "You are at the graveyard. What will you do?\n";
+		if (input == "go" || input == "GO"){
+			go(locate);
+		}
 		/*
-		   if (input == "go" || input == "GO"){
-		   go(locate);
-		   }
 		   else if (input == "search" || input == "SEARCH"){
 		   search(locate);
 		   }
@@ -197,10 +179,62 @@ void menu (int &locate){
 		 */
 	}
 	//End of game tomb
-	if (locate = 6){
+	else if (locate == 6){
 		cout << "You are in Trogdor's tomb. You claim the riches! Thank you for playing!\n";
-			gameWon = true;	
+		gameWon = true;	
 	}
+}
+
+void go(int &locate){
+	string input;
+	cout << "Where would you like to go?\n";
+	cin >> input;
+	if (input == "north" || input == "NORTH"){
+		//Shop is to the north		
+		locate = 1;
+	}
+	else if (input == "south" || input == "SOUTH"){
+		//Desert to the south		
+		locate = 3;
+	}
+	else if (input == "west" || input == "WEST"){
+		//Forest to the west		
+		locate = 2;
+	}
+	else if (input == "east" || input == "EAST"){
+		//Mountains to the east
+		locate = 4;
+	}
+	else if (input == "graveyard" || input == "GRAVEYARD"){
+		//Graveyard in town
+		locate = 5;
+	}
+
+	return ;
+}
+
+void enemy::bunny(Monster &current){
+	current.health = 5;
+	current.attack = 2;
+	current.speed = 2;
+	current.gold = 10;
+	return ;
+}
+
+void enemy::scorpion(Monster &current){
+	current.health = 15;
+	current.attack = 7;
+	current.speed = 5;
+	current.gold = 20;
+	return ;
+}
+
+void enemy::troll(Monster &current){
+	current.health = 35;
+	current.attack = 10;
+	current.speed = 5;
+	current.gold = 0;
+	return ;
 }
 
 character createCharacter(string name, character &player){
