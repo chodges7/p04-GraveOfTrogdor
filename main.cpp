@@ -37,14 +37,14 @@ void mainMenu(char &);
 void runGame();
 character createCharacter(string, character &);
 int randomNumber(unsigned int, unsigned int);
-void menu(int &locate, character &);
+void menu(int &locate, character &, vector <string> );
 void go(int &locate);
 /*
    void search(int locate);
    void use(locate);
-   void list();
-   void talk(int locate);
  */
+void list(vector <string> );
+//  void talk(int locate);
 void fight(Monster &current, character &);
 
 bool gameWon = false;
@@ -78,7 +78,7 @@ int main(){
 
 	//Let the game begin
 	do {
-		menu(locate, player);
+		menu(locate, player, inventory);
 	}
 	while (gameWon != true);
 	return 0;
@@ -88,7 +88,7 @@ void fight (Monster &current, character &player){
 	return ;
 }
 
-void menu (int &locate, character &player){
+void menu (int &locate, character &player, vector <string> inventory){
 	string input;
 	enemy monster;
 
@@ -106,9 +106,11 @@ void menu (int &locate, character &player){
 		   else if (input == "use" || input == "USE"){
 		   use(locate);
 		   }
-		   else if (input == "list" || input == "LIST"){
-		   list(); 
-		   }
+		 */
+		else if (input == "list" || input == "LIST"){
+			list(inventory); 
+		}
+		/*
 		   else if (input == "talk" || input == "TALK"){
 		   talk(locate);
 		   }
@@ -128,9 +130,11 @@ void menu (int &locate, character &player){
 		   else if (input == "use" || input == "USE"){
 		   use(locate);
 		   }
-		   else if (input == "list" || input == "LIST"){
-		   list();
-		   }
+		 */
+		else if (input == "list" || input == "LIST"){
+			list(inventory);
+		}
+		/*
 		   else if (input == "talk" || input == "TALK"){
 		   talk(locate);
 		   }
@@ -170,9 +174,11 @@ void menu (int &locate, character &player){
 		   else if (input == "use" || input == "USE"){
 		   use(locate);
 		   }
-		   else if (input == "list" || input == "LIST"){
-		   list();
-		   }
+		 */
+		else if (input == "list" || input == "LIST"){
+			list(inventory);
+		}
+		/*
 		   else if (input == "talk" || input == "TALK"){
 		   talk(locate);
 		   }
@@ -182,6 +188,19 @@ void menu (int &locate, character &player){
 	else if (locate == 6){
 		cout << "You are in Trogdor's tomb. You claim the riches! Thank you for playing!\n";
 		gameWon = true;	
+	}
+}
+
+void list(inventory){
+	if (inventory.size() == 0){
+		cout << "Your inventory is currently empty.\n";
+		return ;
+	}
+	else {
+		cout << "Your iventory:\n";
+		for (int index = 0; index < inentory.size(); index++){
+			cout << inventory[index] << endl;
+		}
 	}
 }
 
