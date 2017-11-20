@@ -34,15 +34,11 @@ void mainMenu(char &);
 void runGame();
 character createCharacter(string, character &);
 int randomNumber(unsigned int, unsigned int);
-void menu(int &locate, character &, vector <string> );
+void menu(int &locate, character &, vector <string> &);
 void go(int &locate);
-/*
-   void search(int locate);
-   void use(locate);
- */
+void use(bool &, character &, vector <string> &);
 void list(vector <string> );
-//  void talk(int locate);
-void fight(Monster &current, character &);
+void fight(Monster &current, character &, vector <string> &);
 void stats(character);
 
 bool gameWon = false;
@@ -82,11 +78,69 @@ int main(){
         return 0;
 }
 
-void use(){
-        cout << "What do you want to use?\n";
+void use(bool &defeated, character &player, vector <string> &inventory){
+
+        int lower = 0;
+        int potions = 0;
+        int homewordBone = 0;
+        string input; 
+
+        inventory.push_back("potion");
+        inventory.push_back("homewardbone");
+        for (int index = 0; index < inventory.size(); index++){
+                if (inventory[index] == "potion"){
+                        potions += 1;
+                }
+                else if (inventory[index] == "homewardbone"){
+                        homewordBone += 1;
+                }
+        }
+
+        cout << "What do you want to use? You have:\n" << potions;
+        cout << " potions\n" << homewordBone << " homeword bones\n";
+        cin >> input;
+
+        if (input == "potion" || input == "POTION"){
+        if (potions > 0){
+                for (int index = 0; lower < 1; index ++){
+                        if (inventory[index] == "potion"){
+                                inventory.erase(inventory.begin() + index);
+                                lower += 1;
+                        }
+                }
+                if (player.health < 20){
+                        player.health += 10;
+                        cout << "You gained 10 health\n";
+                }
+                else {
+                        player.health += 5;
+                        cout << "You gained 5 health\n";
+                }
+        }
+        else {
+                cout << "You have no potions.\n";
+        }
+        }
+        else if (input == "homeward bone" || input == "bone"){
+        if (homewordBone > 0){
+                for (int index = 0; lower < 1; index ++){
+                        if (inventory[index] == "homewardbone"){
+                                inventory.erase(inventory.begin() + index);
+                                lower += 1;
+                        }
+                }
+                cout << "You ran away in a flash of smoke\n";
+                defeated = true;
+        }
+        else {
+                cout << "You have no bones.\n";
+        }
+        }
+
+        return ;
 }
 
-void menu (int &locate, character &player, vector <string> inventory){
+void menu (int &locate, character &player, vector <string> &inventory){
         string input;
 
         //Town
@@ -96,22 +150,9 @@ void menu (int &locate, character &player, vector <string> inventory){
                 if (input == "go" || input == "GO"){
                         go(locate);
                 }
-                /*
-                   else if (input == "search" || input == "SEARCH"){
-                   search(locate);
-                   }
-                   else if (input == "use" || input == "USE"){
-                   use(locate);
-                   }
-                 */
                 else if (input == "list" || input == "LIST"){
                         list(inventory); 
                 }
-                /*
-                   else if (input == "talk" || input == "TALK"){
-                   talk(locate);
-                   }
-                 */
                 else if (input == "stats" || input == "STATS"){
                         stats(player);
                 }
@@ -123,45 +164,32 @@ void menu (int &locate, character &player, vector <string> inventory){
                 if (input == "go" || input == "GO"){
                         go(locate);
                 }
-                /*
-                   else if (input == "search" || input == "SEARCH"){
-                   search(locate);
-                   }
-                   else if (input == "use" || input == "USE"){
-                   use(locate);
-                   }
-                 */
                 else if (input == "list" || input == "LIST"){
                         list(inventory);
                 }
-                /*
-                   else if (input == "talk" || input == "TALK"){
-                   talk(locate);
-                   }
-                 */
                 else if (input == "stats" || input == "STATS"){
                         stats(player);
                 }
         }
         //Forest
         else if (locate == 2){
-                cout << "You are in the forest. Beware of bunnies.\n";
+                cout << "You are in the forest. A bunny appears!\n";
                 Monster::bunny(current); 
-                fight(current, player);
+                fight(current, player, inventory);
                 locate = 0;
         }
         //Desert
         else if (locate == 3){
-                cout << "You are in the desert. Beware of Scorpions.\n";
+                cout << "You are in the desert. A scorpion appears!\n";
                 Monster::scorpion(current);
-                fight(current, player); 
+                fight(current, player, inventory); 
                 locate = 0;
         }
         //Mountains
         else if (locate == 4){
-                cout << "You are in the mountains. Beware of trolls.\n";
+                cout << "You are in the mountains. A troll appears!\n";
                 Monster::troll(current); 
-                fight(current, player);
+                fight(current, player, inventory);
                 locate = 0;
         }
         //Graveyard
@@ -171,22 +199,9 @@ void menu (int &locate, character &player, vector <string> inventory){
                 if (input == "go" || input == "GO"){
                         go(locate);
                 }
-                /*
-                   else if (input == "search" || input == "SEARCH"){
-                   search(locate);
-                   }
-                   else if (input == "use" || input == "USE"){
-                   use(locate);
-                   }
-                 */
                 else if (input == "list" || input == "LIST"){
                         list(inventory);
                 }
-                /*
-                   else if (input == "talk" || input == "TALK"){
-                   talk(locate);
-                   }
-                 */
                 else if (input == "stats" || input == "STATS"){
                         stats(player);
                 }
@@ -198,7 +213,7 @@ void menu (int &locate, character &player, vector <string> inventory){
         }
 }
 
-void fight (Monster &current, character &player){
+void fight (Monster &current, character &player, vector <string> &inventory){
         string input;
         bool defeated = false;
         bool turn = true;
@@ -249,9 +264,10 @@ void fight (Monster &current, character &player){
                         }
 
                         else if (input == "use" || input == "USE"){
-                                use();
-                                turn = false;
-
+                                use(defeated,player,inventory);
+                                if (defeated == false){ 
+                                        turn = false;
+                                }
                         }
                 }
                 if (turn == false){
@@ -277,7 +293,10 @@ void fight (Monster &current, character &player){
                 player.gold += current.gold;
         }
 
-
+        if (player.health <= 0){
+                cout << "You have died.\n";
+                gameWon = true;
+        }
         return ;
 }
 
@@ -423,8 +442,8 @@ void mainMenu(char &input){
                 if (input == 'i' || input == 'I'){
                         cout << "\nSimilar to old fashioned video games, this is a little RPG that takes\n";
                         cout << "input commands. Unlike old fashioned video games, you have to enter the\n";
-                        cout << "seperate words as seperate commands. List of possible commands listed below:\n\n";
-                        cout << "go north (or any other cardinal direction)\nsearch 'name'\nuse 'item'\nlist inventory\ntalk 'person'\n";
+                        cout << "seperate words as seperate commands.\nList of possible commands:\n";
+                        cout << "go north (or any other cardinal direction)\nuse 'item'\nlist\n\nWhile in battle:\nattack\nrun\nuse\nstats\n";
                 }
                 else if (input == 'l' || input == 'L'){
                         cout << "\nYou are a grave robber, and your goal is to rob the grave of Trogdor.\n";
