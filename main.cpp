@@ -85,8 +85,6 @@ void use(bool &defeated, character &player, vector <string> &inventory){
         int homewordBone = 0;
         string input; 
 
-        inventory.push_back("potion");
-        inventory.push_back("homewardbone");
         for (int index = 0; index < inventory.size(); index++){
                 if (inventory[index] == "potion"){
                         potions += 1;
@@ -101,40 +99,40 @@ void use(bool &defeated, character &player, vector <string> &inventory){
         cin >> input;
 
         if (input == "potion" || input == "POTION"){
-        if (potions > 0){
-                for (int index = 0; lower < 1; index ++){
-                        if (inventory[index] == "potion"){
-                                inventory.erase(inventory.begin() + index);
-                                lower += 1;
+                if (potions > 0){
+                        for (int index = 0; lower < 1; index ++){
+                                if (inventory[index] == "potion"){
+                                        inventory.erase(inventory.begin() + index);
+                                        lower += 1;
+                                }
                         }
-                }
-                if (player.health < 20){
-                        player.health += 10;
-                        cout << "You gained 10 health\n";
+                        if (player.health < 20){
+                                player.health += 10;
+                                cout << "You gained 10 health\n";
+                        }
+                        else {
+                                player.health += 5;
+                                cout << "You gained 5 health\n";
+                        }
                 }
                 else {
-                        player.health += 5;
-                        cout << "You gained 5 health\n";
+                        cout << "You have no potions.\n";
                 }
-        }
-        else {
-                cout << "You have no potions.\n";
-        }
         }
         else if (input == "homeward bone" || input == "bone"){
-        if (homewordBone > 0){
-                for (int index = 0; lower < 1; index ++){
-                        if (inventory[index] == "homewardbone"){
-                                inventory.erase(inventory.begin() + index);
-                                lower += 1;
+                if (homewordBone > 0){
+                        for (int index = 0; lower < 1; index ++){
+                                if (inventory[index] == "homewardbone"){
+                                        inventory.erase(inventory.begin() + index);
+                                        lower += 1;
+                                }
                         }
+                        cout << "You ran away in a flash of smoke\n";
+                        defeated = true;
                 }
-                cout << "You ran away in a flash of smoke\n";
-                defeated = true;
-        }
-        else {
-                cout << "You have no bones.\n";
-        }
+                else {
+                        cout << "You have no bones.\n";
+                }
         }
 
         return ;
