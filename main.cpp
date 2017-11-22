@@ -41,6 +41,7 @@ void list(vector <string> );
 void fight(Monster &current, character &, vector <string> &);
 void stats(character);
 void shop(character &, vector <string> &, int &, vector <string> &);
+void townUse(character &, vector <string> &);
 
 bool gameWon = false;
 
@@ -67,7 +68,6 @@ int main(){
 		return 0;
 	}
 
-
 	//Name for the player
 	cout << "\nPlease enter a character name:";
 	cin >> name;
@@ -83,89 +83,55 @@ int main(){
 	return 0;
 }
 
-void shop(character &player, vector <string> &shopkeep, int &locate, vector <string> &inventory){
-	int ironarmor = 0;
-	int steelarmor = 0;
-	int ironsword = 0;
-	int steelsword = 0;
-	int again;
-	string input;
+void townUse (character &player, vector <string> &inventory){
+	int temp;
+	int lower = 0;
+	int potions = 0;
+	int homewordBone = 0;
+	string input; 
 
-	cout << "I have many things to sell.\n--------------------------\nPotions - 15g\nHomeward Bones - 10g\n";
-	for (int index = 0; index < shopkeep.size(); index++){
-		if (shopkeep[index] == "ironarmor"){
-			ironarmor += 1;
+	for (int index = 0; index < inventory.size(); index++){
+		if (inventory[index] == "potion"){
+			potions += 1;
 		}
-		if (shopkeep[index] == "steelarmor"){
-			steelarmor += 1;
-		}
-		if (shopkeep[index] == "ironsword"){
-			ironsword += 1;
-		}
-		if (shopkeep[index] == "steelsword"){
-			steelsword += 1;
+		else if (inventory[index] == "homewardbone"){
+			homewordBone += 1;
 		}
 	}
-	cout << "armor\nswords\n"; 
+
+	cout << "What do you want to use? You have:\n" << potions;
+	cout << " potions\n" << homewordBone << " homeword bones\n";
 	cin >> input;
-	if (input == "armor"){
-		string input;
-		cout << "Which type of armor would you like? I have:\n";
-		cout << ironarmor << " set(s) of iron armor - 50g\n" << steelarmor << " set(s) of steel armor - 100g\n";
-		cin >> input;
-		if ((input == "iron" || input == "IRON") && ironarmor > 0){
-			cout << "You've bought iron aromr.\n";
-			inventory.push_back("iron armor");
-			player.speed += 1;
-		}
-		else if ((input == "steel" || input == "STEEL") && steelarmor > 0){
-			cout << "You've bought steel armor.\n";
-			inventory.push_back("steel armor");
-			player.speed += 1;
+
+	if (input == "potion" || input == "POTION"){
+		if (potions > 0){
+			for (int index = 0; lower < 1; index ++){
+				if (inventory[index] == "potion"){
+					inventory.erase(inventory.begin() + index);
+					lower += 1;
+				}
+			}
+			if (player.health <= 10){
+				temp = player.health;
+				player.health = 20;
+				temp = player.health - temp;
+				cout << "You gained " << temp << " health\n";
+			}
+			else {
+				cout << "You gained 5 health\n";
+				player.health += 5;
+			}
 		}
 		else {
-			cout << "I don't have that, sorry.\n";
-		}	
-	}
-	else if (input == "sword" || input == "swords"){
-		string input;		
-		cout << "Which type of sword would you like? I have:\n";
-		cout << ironsword << " iron sword(s)\n" << steelsword << " steel sword(s)\n";
-		cin >> input;
-		if ((input == "iron" || input == "IRON") && ironsword > 0){
-			cout << "You've bought an iron sword.\n";
-			inventory.push_back("iron sword");
-			player.attack += 2;
-		}
-		else if ((input == "steel" || input == "STEEL")  && steelsword > 0){
-			cout << "You've bought a steel sword.\n";
-			inventory.push_back("steel sword");
-			player.attack += 3;
-		}
-		else {
-			cout << "I don't have that, sorry.\n";
+			cout << "You have no potions.\n";
 		}
 	}
-	else if ((input == "potion" || input == "POTION") && player.gold >= 15){
-		inventory.push_back("potion");
-		player.gold -= 15;
-	}
-	else if ((input == "bone" || input == "BONE") && player.gold >= 10){
-		inventory.push_back("homewardbone");
-		player.gold -= 10;
+	else if (input == "homeward bone" || input == "bone"){
+		cout << "You aren't in battle. It would be useless to use one here.\n";	
 	}
 
-	cout << "Would you like to buy something else?\n";
-	cout << "1) Yes\n2) No\n";
-	cin >> again;
+	return ;
 
-	if (again == 1){
-		return ;
-	}
-	if (again == 2){
-		locate = 0;
-		return ;
-	}
 }
 
 void menu (int &locate, character &player, vector <string> &inventory, vector <string> &shopkeep){
@@ -174,6 +140,11 @@ void menu (int &locate, character &player, vector <string> &inventory, vector <s
 	//Town
 	if (locate == 0){
 		cout << "You're in the town. What will you do? ";
+		for (int index = 0; index < inventory.size(); index++){
+			if (inventory[index] == "key"){
+				cout << "You have the key. Go to the graveyard!\n";
+			}			
+		}
 		cin >> input;
 		if (input == "go" || input == "GO"){
 			go(locate);
@@ -183,6 +154,9 @@ void menu (int &locate, character &player, vector <string> &inventory, vector <s
 		}
 		else if (input == "stats" || input == "STATS"){
 			stats(player);
+		}
+		else if (input == "use" || input == "USE"){
+			townUse(player, inventory);
 		}
 	}
 	//Shop
@@ -209,26 +183,153 @@ void menu (int &locate, character &player, vector <string> &inventory, vector <s
 		cout << "You are in the mountains. A troll appears!\n";
 		Monster::troll(current); 
 		fight(current, player, inventory);
+		cout << "The troll drops the key.\n";
+		inventory.push_back("key");	
 		locate = 0;
 	}
 	//Graveyard
 	else if (locate == 5){
-		cout << "You are at the graveyard. What will you do? ";
-		cin >> input; 
-		if (input == "go" || input == "GO"){
-			go(locate);
-		}
-		else if (input == "list" || input == "LIST"){
-			list(inventory);
-		}
-		else if (input == "stats" || input == "STATS"){
-			stats(player);
+		cout << "You are at the graveyard.";
+		for (int index = 0; index < inventory.size(); index++){
+			if ( inventory[index] == "key"){
+				cout << "You unlock the gate and enter Trogdor's tomb.\n";
+				locate = 6;			
+			}
+			else {
+				cout << "You look at the locked tomb with determination.\n";
+			}
 		}
 	}
 	//End of game tomb
 	else if (locate == 6){
 		cout << "You are in Trogdor's tomb. You claim the riches! Thank you for playing!\n";
 		gameWon = true;	
+	}
+}
+
+void shop(character &player, vector <string> &shopkeep, int &locate, vector <string> &inventory){
+	int ironarmor = 0;
+	int steelarmor = 0;
+	int ironsword = 0;
+	int steelsword = 0;
+	int again;
+	string input;
+
+	cout << "\nI have many things to sell.\n--------------------------\nPotions - 15g\nHomeward Bones - 10g\n";
+	for (int index = 0; index < shopkeep.size(); index++){
+		if (shopkeep[index] == "ironarmor"){
+			ironarmor += 1;
+		}
+		if (shopkeep[index] == "steelarmor"){
+			steelarmor += 1;
+		}
+		if (shopkeep[index] == "ironsword"){
+			ironsword += 1;
+		}
+		if (shopkeep[index] == "steelsword"){
+			steelsword += 1;
+		}
+	}
+	cout << "armor\nswords\n"; 
+	cin >> input;
+	if (input == "armor"){
+		string input;
+		cout << "Which type of armor would you like? I have:\n";
+		cout << ironarmor << " set(s) of iron armor - 50g\n" << steelarmor << " set(s) of steel armor - 100g\n";
+		cin >> input;
+		if (((input == "iron" || input == "IRON") && ironarmor > 0) && player.gold >= 50){
+			cout << "You've bought iron aromr.\n";
+			inventory.push_back("iron armor");
+			player.gold -= 50;
+			player.speed += 1;
+			int lower = 0;	
+			for (int index = 0; lower < 1; index ++){
+				if (shopkeep[index] == "ironarmor"){
+					shopkeep.erase(shopkeep.begin() + index);
+					lower += 1;
+				}
+			}
+		}
+		else if (((input == "steel" || input == "STEEL") && steelarmor > 0) && player.gold >= 100){
+			cout << "You've bought steel armor.\n";
+			inventory.push_back("steel armor");
+			player.gold -= 100;
+			player.speed += 1;
+			int lower = 0;
+			for (int index = 0; lower < 1; index ++){
+				if (shopkeep[index] == "steelarmor"){
+					shopkeep.erase(shopkeep.begin() + index);
+					lower += 1;
+				}
+			}
+		}
+		else {
+			cout << "You don't have enough gold for that.\n";
+		}
+	}	
+	else if (input == "sword" || input == "swords"){
+		string input;		
+		cout << "Which type of sword would you like? I have:\n";
+		cout << ironsword << " iron sword(s) - 50g\n" << steelsword << " steel sword(s) - 100g\n";
+		cin >> input;
+		if (((input == "iron" || input == "IRON") && ironsword > 0) && player.gold >= 50){
+			cout << "You've bought an iron sword.\n";
+			inventory.push_back("iron sword");
+			player.gold -= 50;
+			player.attack += 2;
+			int lower = 0;
+			for (int index = 0; lower < 1; index ++){
+				if (shopkeep[index] == "ironsword"){
+					shopkeep.erase(shopkeep.begin() + index);
+					lower += 1;
+				}
+			}
+		}
+		else if (((input == "steel" || input == "STEEL")  && steelsword > 0) && player.gold >= 100){
+			cout << "You've bought a steel sword.\n";
+			inventory.push_back("steel sword");
+			player.gold -= 100;
+			player.attack += 3;
+			int lower = 0;
+			for (int index = 0; lower < 1; index ++){
+				if (shopkeep[index] == "steelsword"){
+					shopkeep.erase(shopkeep.begin() + index);
+					lower += 1;
+				}
+			}
+		}
+		else {
+			cout << "You don't have enough gold for that.\n";
+		}
+	}
+	else if ((input == "potion" || input == "POTION") && player.gold >= 15){
+		inventory.push_back("potion");
+		cout << "You've bought a potion.\n";
+		player.gold -= 15;
+	}
+	else if ((input == "potion" || input == "POTION") && player.gold < 15){
+		cout << "You don't have enough gold.\n";
+	}
+	else if ((input == "bone" || input == "BONE") && player.gold >= 10){
+		inventory.push_back("homewardbone");
+		cout << "You've bought a homeward bone.\n";
+		player.gold -= 10;
+	}
+	else if ((input == "bone" || input == "BONE") && player.gold < 10){
+		cout << "You don't have enough gold.\n";
+	}
+
+
+	cout << "Would you like to buy something else?\n";
+	cout << "1) Yes\n2) No\n";
+	cin >> again;
+
+	if (again == 1){
+		return ;
+	}
+	if (again == 2){
+		locate = 0;
+		return ;
 	}
 }
 
@@ -269,6 +370,7 @@ void use(bool &defeated, character &player, vector <string> &inventory){
 			}
 			else {
 				cout << "You gained 5 health\n";
+				player.health += 5;			
 			}
 		}
 		else {
@@ -303,9 +405,24 @@ void fight (Monster &current, character &player, vector <string> &inventory){
 	int run;
 
 	do {
+		if (turn == false){
+			hit = randomNumber(1,10);
+			if (hit > player.speed){
+				damage = randomNumber(1,current.attack);
+				cout << "You get hit with " << damage << " damage.\n";
+				player.health -= damage;
+				if (player.health <= 0){
+					defeated = true;
+				}
+			}
+			else if (hit <= player.speed){
+				cout << "They missed!\n";
+			}
+			turn = true;
+		}
 		if (turn == true){ 
-			cout << "======= FIGHT =======\n";
-
+			cout << "======= FIGHT =======";
+			cout << "     You have " << player.health << " hp\n";
 			cout << "What will you do? ";
 			cin >> input;
 
@@ -351,21 +468,6 @@ void fight (Monster &current, character &player, vector <string> &inventory){
 					turn = false;
 				}
 			}
-		}
-		if (turn == false){
-			hit = randomNumber(1,10);
-			if (hit > player.speed){
-				damage = randomNumber(1,current.attack);
-				cout << "You get hit with " << damage << " damage.\n";
-				player.health -= damage;
-				if (player.health <= 0){
-					defeated = true;
-				}
-			}
-			else if (hit <= player.speed){
-				cout << "They missed!\n";
-			}
-			turn = true;
 		}
 	}
 	while (defeated == false);
@@ -436,6 +538,10 @@ void go(int &locate){
 	else if (input == "graveyard" || input == "GRAVEYARD"){
 		//Graveyard in town
 		locate = 5;
+	}
+
+	else {
+		cout << "Please enter a valid input.\n";
 	}
 
 	return ;
