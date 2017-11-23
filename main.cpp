@@ -190,15 +190,19 @@ void menu (int &locate, character &player, vector <string> &inventory, vector <s
 	}
 	//Graveyard
 	else if (locate == 5){
+		bool keythere = false;
 		cout << "You are at the graveyard.";
 		for (int index = 0; index < inventory.size(); index++){
-			if ( inventory[index] == "key"){
-				cout << "You unlock the gate and enter Trogdor's tomb.\n";
-				locate = 6;			
+			if (inventory[index] == "key"){
+				keythere = true;		
 			}
-			else {
-				cout << "You look at the locked tomb with determination.\n";
-			}
+		}
+		if (keythere == true){
+			cout << "You unlock the gate and enter Trogdor's tomb.\n";
+			locate = 6;			
+		}
+		else {
+			cout << "You look at the locked tomb with determination.\n";
 		}
 	}
 	//End of game tomb
@@ -527,7 +531,7 @@ void fight (Monster &current, character &player, vector <string> &inventory){
 void stats(character player){
 	cout << "\nYou have:\n  " << player.health << " health\n";
 	cout << "  " << player.attack << " attack\n  " << player.speed;
-	cout << " speed\n  " << player.gold << " gold\n\n";
+	cout << " speed\n  " << player.gold << " gold\n";
 }
 
 //List() outputs the inventory vector
