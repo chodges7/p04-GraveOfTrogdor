@@ -161,6 +161,7 @@ void menu (int &locate, character &player, vector <string> &inventory, vector <s
 	}
 	//Shop
 	else if (locate == 1){
+		cout << "Welcome to the shop.\n";
 		shop (player, shopkeep, locate, inventory);
 		return ;        
 	}
@@ -183,8 +184,6 @@ void menu (int &locate, character &player, vector <string> &inventory, vector <s
 		cout << "You are in the mountains. A troll appears!\n";
 		Monster::troll(current); 
 		fight(current, player, inventory);
-		cout << "The troll drops the key.\n";
-		inventory.push_back("key");	
 		locate = 0;
 	}
 	//Graveyard
@@ -212,10 +211,11 @@ void shop(character &player, vector <string> &shopkeep, int &locate, vector <str
 	int steelarmor = 0;
 	int ironsword = 0;
 	int steelsword = 0;
-	int again;
+	string again;
 	string input;
 
-	cout << "\nI have many things to sell.\n--------------------------\nPotions - 15g\nHomeward Bones - 10g\n";
+	cout << "\nI have many things to sell.\n--------------------------   It looks like you have: " << player.gold << " gold\n";
+	cout << "Potions - 15g\nHomeward Bones - 10g\n";
 	for (int index = 0; index < shopkeep.size(); index++){
 		if (shopkeep[index] == "ironarmor"){
 			ironarmor += 1;
@@ -324,10 +324,10 @@ void shop(character &player, vector <string> &shopkeep, int &locate, vector <str
 	cout << "1) Yes\n2) No\n";
 	cin >> again;
 
-	if (again == 1){
+	if (again == "yes" || input == "y"){
 		return ;
 	}
-	if (again == 2){
+	if (again == "no" || input == "n"){
 		locate = 0;
 		return ;
 	}
@@ -477,6 +477,11 @@ void fight (Monster &current, character &player, vector <string> &inventory){
 		player.gold += current.gold;
 	}
 
+	if (current.health <= 0 && current.attack == 7){
+		cout << "The troll drops the key.\n";
+		inventory.push_back("key");		
+	}
+
 	if (player.health <= 0){
 		cout << "You have died.\n";
 		gameWon = true;
@@ -557,7 +562,7 @@ void Monster::bunny(Monster &current){
 
 void Monster::scorpion(Monster &current){
 	current.health = 15;
-	current.attack = 7;
+	current.attack = 5;
 	current.speed = 5;
 	current.gold = 20;
 	return ;
@@ -565,7 +570,7 @@ void Monster::scorpion(Monster &current){
 
 void Monster::troll(Monster &current){
 	current.health = 35;
-	current.attack = 10;
+	current.attack = 7;
 	current.speed = 5;
 	current.gold = 0;
 	return ;
@@ -617,7 +622,7 @@ void runGame(){
 	cout << "structure compared to the rest of the gravestones around you. As you\n";
 	cout << "go to walk through the doorway, you realize a giant lock holds the\n";
 	cout << "gate shut. If the legend is correct, the key should be being protected\n";
-	cout << "in the mountains.\nFor now you can't enter the tomb. Find the key and take what is yours!\n";
+	cout << "in the mountains to the east.\nFor now you can't enter the tomb. Find the key and take what is yours!\n";
 }
 
 void mainMenu(char &input){
@@ -629,9 +634,8 @@ void mainMenu(char &input){
 		cin >> input;
 		if (input == 'i' || input == 'I'){
 			cout << "\nSimilar to old fashioned video games, this is a little RPG that takes\n";
-			cout << "input commands. Unlike old fashioned video games, you have to enter the\n";
-			cout << "seperate words as seperate commands.\nList of possible commands:\n";
-			cout << "go north (or any other cardinal direction)\nuse 'item'\nlist\n\nWhile in battle:\nattack\nrun\nuse\nstats\n";
+			cout << "input commands.\nList of possible commands:\n";
+			cout << "go 'direction' (If you want to go to the graveyard, type go graveyard)\nuse 'item'\nlist\nstats\n\nWhile in battle:\nattack\nrun\nuse\n";
 		}
 		else if (input == 'l' || input == 'L'){
 			cout << "\nYou are a grave robber, and your goal is to rob the grave of Trogdor.\n";
