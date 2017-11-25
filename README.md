@@ -17,7 +17,8 @@ in the else conditional in case something goes wrong with the input statement.
 
   Control flow can be seen in [main.cpp at lines 627-653](/blob/master/main.cpp). There
 is an if statement, an else if to check for other conditions, and an else condition to
-catch all the other inputs that the user might throw at the player.
+catch all the other inputs that the user might throw at the player. This is so the user
+can choose a class by inputing a number into the program.
 
 ### Iteration
 
