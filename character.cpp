@@ -4,13 +4,65 @@
 
 using namespace std
 
-void stats(){
+//Function to see if a player passes a speed check
+bool speedCheck(int check){
+	if (speed >= check){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void setSpeed(int delta){
+	speed += delta;
+}
+
+void setAttack(int delta){
+	attack += delta;
+}
+
+//This function checks if the player has enough gold to buy something
+bool character::goldCheck(int check){
+	if (gold >= check){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void character::setHealth(int delta){
+	//This accounts for both losing and gaining health because if delta if +
+	// then there is a gain in health and if health is - then there is a 
+	// decrease in health	
+
+	if (delta > 0){
+		int temp = health;
+		health += delta;
+		if (health > 20){
+			health = 20;
+		}
+		cout << "You gained " << health - temp << " health.\n";
+	}
+	else if (delta < 0){
+		int temp = health;
+		health += delta;
+		cout << "You lost " << temp - health << " health.\n";
+	}
+}
+
+void character::setGold(int delta){
+	gold += delta;
+}
+
+void character::stats(){
 	cout << "\nYou have:\n " << health << " health\n ";
 	cout << attack << " attack\n " << speed << " speed\n ";
 	cout << gold << " gold\n";
 }
 
-void createCharacter(string name){
+void character::createCharacter(string name){
 	int input;
 	bool done = false;
 

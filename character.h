@@ -5,8 +5,14 @@
 
 class character{
 	public:
-		void createCharacter(std::string name);
+		bool goldCheck(int);
+		bool speedCheck(int);
+		void createCharacter(std::string);
 		void stats();
+		void setHealth(int);
+		void setGold(int);
+		void setAttack(int);
+		void setSpeed(int);
 
 	private:
 		int health;
