@@ -4,6 +4,8 @@
 #include<string>
 #include<ctime>
 #include<cstdlib>
+#include "character.h"
+#include "Monster.h"
 
 using namespace std;
 
@@ -589,30 +591,6 @@ void go(int &locate){
 		cout << "Please enter a valid input.\n";
 	}
 
-	return ;
-}
-
-void Monster::bunny(Monster &current){
-	current.health = 5;
-	current.attack = 2;
-	current.speed = 2;
-	current.gold = 10;
-	return ;
-}
-
-void Monster::scorpion(Monster &current){
-	current.health = 15;
-	current.attack = 5;
-	current.speed = 5;
-	current.gold = 20;
-	return ;
-}
-
-void Monster::troll(Monster &current){
-	current.health = 35;
-	current.attack = 7;
-	current.speed = 5;
-	current.gold = 0;
 	return ;
 }
 
