@@ -3,9 +3,10 @@
 
 class Monster{
 	public:
-		static void bunny(Monster &);
-		static void scorpion(Monster &);
-		static void troll (Monster &);
+		static void bunny();
+		static void scorpion();
+		static void troll();
+		bool checkDead();
 
 	private:
 		int health;
