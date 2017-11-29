@@ -4,7 +4,13 @@
 #include<string>
 
 class character{
+	private:
+		int health;
+		int speed;
+		int attack;
+		int gold;
 	public:
+		int outGold();
 		bool goldCheck(int);
 		bool speedCheck(int);
 		void createCharacter(std::string);
@@ -13,12 +19,6 @@ class character{
 		void setGold(int);
 		void setAttack(int);
 		void setSpeed(int);
-
-	private:
-		int health;
-		int speed;
-		int attack;
-		int gold;
 };
 
 #endif

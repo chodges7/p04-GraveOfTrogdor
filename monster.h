@@ -3,10 +3,10 @@
 
 class Monster{
 	public:
-		static void bunny();
-		static void scorpion();
-		static void troll();
 		bool checkDead();
+		void bunny();
+		void scorpion();
+		void troll();
 
 	private:
 		int health;

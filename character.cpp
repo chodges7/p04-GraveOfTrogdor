@@ -2,10 +2,15 @@
 #include<iostream>
 #include<string>
 
-using namespace std
+using namespace std;
+
+//A function that outputs the gold amount
+int character::outGold(){
+	return gold;
+}
 
 //Function to see if a player passes a speed check
-bool speedCheck(int check){
+bool character::speedCheck(int check){
 	if (speed >= check){
 		return true;
 	}
@@ -14,11 +19,11 @@ bool speedCheck(int check){
 	}
 }
 
-void setSpeed(int delta){
+void character::setSpeed(int delta){
 	speed += delta;
 }
 
-void setAttack(int delta){
+void character::setAttack(int delta){
 	attack += delta;
 }
 
@@ -89,7 +94,7 @@ void character::createCharacter(string name){
 		else if (input == 3){
 			health = 10;
 			speed = 7;
-			attack 3;
+			attack = 3;
 			gold = 15;
 			cout << "Welcome " << name << " the rouge\n";
 			done = true;

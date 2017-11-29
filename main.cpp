@@ -65,6 +65,105 @@ int main(){
 	return 0;
 }
 
+void fight (vector <string> &inventory){
+	return ;
+}
+
+/*
+void fight (vector <string> &inventory){
+	string input;
+	bool defeated = false;
+	bool turn = true;
+	int hit;
+	int damage;
+	int run;
+
+	do {
+		if (turn == false){
+			hit = randomNumber(1,10);
+			if (player.speedCheck(hit)){
+				damage = randomNumber(1,current.attack);
+				cout << "You get hit with " << damage << " damage.\n";
+				player.setHealth(-damage);
+				if (player.health <= 0){
+					defeated = true;
+				}
+			}
+			else if (hit <= player.speed){
+				cout << "They missed!\n";
+			}
+			turn = true;
+		}
+		if (turn == true){ 
+			cout << "======= FIGHT =======";
+			cout << "     You have " << player.health << " hp\n";
+			cout << "What will you do? ";
+			cin >> input;
+
+			if (input == "attack" || input == "ATTACK"){
+				hit = randomNumber(1, 10);
+				if (hit >= current.speed){
+					damage = randomNumber (1,player.attack);
+					cout << "You deal " << damage << " damage.\n";
+					current.health -= damage; 
+					if (current.health <= 0){
+						defeated = true;
+					}
+					turn = false;
+				}
+				else {
+					cout << "You missed\n";
+					turn = false;
+				}
+			}
+
+			else if (input == "run" || input == "RUN"){
+				run = randomNumber (1,10);
+				if (run <= current.speed){
+					cout << "You failed to run away.\n";
+					turn = false;
+				}		
+				else {
+					if (player.gold >= 5){
+						cout << "You ran away and dropped 5 gold!\n";			
+						player.gold -= 5;
+						defeated = true;				
+					}
+					else {
+						cout << "You ran away!\n";
+						defeated = true;
+					}
+				}
+			}
+
+			else if (input == "use" || input == "USE"){
+				use(defeated,inventory);
+				if (defeated == false){ 
+					turn = false;
+				}
+			}
+		}
+	}
+	while (defeated == false);
+
+	if (current.health <= 0){
+		cout << "You have won! Gained " << current.gold << " gold!\n";
+		player.gold += current.gold;
+	}
+
+	if (current.health <= 0 && current.attack == 7){
+		cout << "The troll drops the key.\n";
+		inventory.push_back("key");		
+	}
+
+	if (player.health <= 0){
+		cout << "You have died.\n";
+		gameWon = true;
+	}
+	return ;
+}
+*/
+
 //Allows player to use potions while outside of combat
 //See Use() for comments; townuse() is comprised of use()
 void townUse (vector <string> &inventory){
@@ -138,27 +237,27 @@ void menu (int &locate, vector <string> &inventory, vector <string> &shopkeep){
 	//Shop
 	else if (locate == 1){
 		cout << "\nWelcome to the shop.\n";
-		shop (shopkeep, locate, inventory, player);
+		shop (shopkeep, locate, inventory);
 		return ;        
 	}
 	//Forest
 	else if (locate == 2){
 		cout << "\nYou are in the forest. A bunny appears!\n";
-		Monster::bunny(); 
+		current.bunny(); 
 		fight(inventory);
 		locate = 0;
 	}
 	//Desert
 	else if (locate == 3){
 		cout << "\nYou are in the desert. A scorpion appears!\n";
-		Monster::scorpion();
+		current.scorpion();
 		fight(inventory); 
 		locate = 0;
 	}
 	//Mountains
 	else if (locate == 4){
 		cout << "\nYou are in the mountains. A troll appears!\n";
-		Monster::troll(); 
+		current.troll(); 
 		fight(inventory);
 		locate = 0;
 	}
@@ -196,7 +295,7 @@ void shop(vector <string> &shopkeep, int &locate, vector <string> &inventory){
 	string input;
 
 	//This is the main menu of the shop
-	cout << "I have many things to sell.\n--------------------------   It looks like you have: " << player.gold << " gold\n";
+	cout << "I have many things to sell.\n--------------------------   It looks like you have: " << player.outGold() << " gold\n";
 	cout << "Potions - 15g\nHomeward Bones - 10g\n";
 	for (int index = 0; index < shopkeep.size(); index++){
 		if (shopkeep[index] == "ironarmor"){
@@ -348,7 +447,7 @@ void use(bool &defeated, vector <string> &inventory){
 		else if (inventory[index] == "homewardbone"){
 			homewordBone += 1;
 		}
-	}
+}
 
 	//Asks users what they want to use
 	cout << "What do you want to use? You have:\n" << potions;
@@ -366,10 +465,10 @@ void use(bool &defeated, vector <string> &inventory){
 			}
 			player.setHealth(10);
 		}
-	}
-	//If the player doesn't have a potion it outputs this
-	else {
-		cout << "You have no potions.\n";
+		//If the player doesn't have a potion it outputs this
+		else {
+			cout << "You have no potions.\n";
+		}
 	}
 
 	//Homeward bone section of the function
@@ -390,99 +489,6 @@ void use(bool &defeated, vector <string> &inventory){
 		}
 	}
 
-	return ;
-}
-
-void fight (vector <string> &inventory){
-	string input;
-	bool defeated = false;
-	bool turn = true;
-	int hit;
-	int damage;
-	int run;
-
-	do {
-		if (turn == false){
-			hit = randomNumber(1,10);
-			if (player.speedCheck(hit)){
-				damage = randomNumber(1,current.attack);
-				cout << "You get hit with " << damage << " damage.\n";
-				player.setHealth(-damage);
-				if (player.health <= 0){
-					defeated = true;
-				}
-			}
-			else if (hit <= player.speed){
-				cout << "They missed!\n";
-			}
-			turn = true;
-		}
-		if (turn == true){ 
-			cout << "======= FIGHT =======";
-			cout << "     You have " << player.health << " hp\n";
-			cout << "What will you do? ";
-			cin >> input;
-
-			if (input == "attack" || input == "ATTACK"){
-				hit = randomNumber(1, 10);
-				if (hit >= current.speed){
-					damage = randomNumber (1,player.attack);
-					cout << "You deal " << damage << " damage.\n";
-					current.health -= damage; 
-					if (current.health <= 0){
-						defeated = true;
-					}
-					turn = false;
-				}
-				else {
-					cout << "You missed\n";
-					turn = false;
-				}
-			}
-
-			else if (input == "run" || input == "RUN"){
-				run = randomNumber (1,10);
-				if (run <= current.speed){
-					cout << "You failed to run away.\n";
-					turn = false;
-				}		
-				else {
-					if (player.gold >= 5){
-						cout << "You ran away and dropped 5 gold!\n";			
-						player.gold -= 5;
-						defeated = true;				
-					}
-					else {
-						cout << "You ran away!\n";
-						defeated = true;
-					}
-				}
-			}
-
-			else if (input == "use" || input == "USE"){
-				use(defeated,player,inventory);
-				if (defeated == false){ 
-					turn = false;
-				}
-			}
-		}
-	}
-	while (defeated == false);
-
-	if (current.health <= 0){
-		cout << "You have won! Gained " << current.gold << " gold!\n";
-		player.gold += current.gold;
-	}
-
-	if (current.health <= 0 && current.attack == 7){
-		cout << "The troll drops the key.\n";
-		inventory.push_back("key");		
-	}
-
-	if (player.health <= 0){
-		cout << "You have died.\n";
-		gameWon = true;
-	}
 	return ;
 }
 

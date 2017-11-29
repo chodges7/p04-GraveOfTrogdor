@@ -2,7 +2,7 @@
 
 using namespace std;
 
-bool checkDead(){
+bool Monster::checkDead(){
 	if (health <= 0){
 		return true;
 	}
