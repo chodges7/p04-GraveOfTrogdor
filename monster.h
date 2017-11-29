@@ -3,7 +3,12 @@
 
 class Monster{
 	public:
+		int speedOut();
+		int attackOut();		
+		int goldOut();
+		bool attackCheck(int);
 		bool checkDead();
+		void setHealth(int);		
 		void bunny();
 		void scorpion();
 		void troll();

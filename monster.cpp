@@ -2,6 +2,32 @@
 
 using namespace std;
 
+int Monster::goldOut(){
+	return gold;
+}
+
+int Monster::attackOut(){
+	return attack;
+}
+
+void Monster::setHealth(int delta){
+	health += delta;
+	return ;
+}
+
+int Monster::speedOut(){
+	return speed;
+}
+
+bool Monster::attackCheck(int check){
+	if (attack == check){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 bool Monster::checkDead(){
 	if (health <= 0){
 		return true;

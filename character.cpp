@@ -4,6 +4,27 @@
 
 using namespace std;
 
+int character::attackOut(){
+	return attack;
+}
+
+int character::healthOut(){
+	return health;
+}
+
+int character::speedOut(){
+	return speed;
+}
+
+bool character::healthCheck(int check){
+	if (health > check){
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
 //A function that outputs the gold amount
 int character::outGold(){
 	return gold;
