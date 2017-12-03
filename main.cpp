@@ -13,7 +13,7 @@ using namespace std;
 int randomNumber(unsigned int, unsigned int);
 void mainMenu(char &);
 void runGame();
-void menu(int &locate, vector <string> &, vector <string> &);
+void menu(int &locate, vector <string> &, vector <string> &, string);
 void go(int &locate);
 void use(bool &, vector <string> &);
 void list(vector <string> );
@@ -25,7 +25,7 @@ void townUse(vector <string> &);
 bool gameWon = false;
 character player;
 Monster current;
-
+ofstream killCount;
 
 int main(){
 	//Seed the random number generator
@@ -34,6 +34,7 @@ int main(){
 	string name;
 	vector <string> inventory;
 	vector <string> shopkeep;
+
 
 	//Locator value so the program knows where the player is
 	int locate = 0;
@@ -54,14 +55,20 @@ int main(){
 	cout << "\nPlease enter a character name:";
 	cin >> name;
 
+	killCount.open("killLog.txt");
+	killCount << name << "'s kill count\n";
+	killCount << "--------------------\n";
+
 	//This function creates the player object
 	player.createCharacter(name);
 
 	//Let the game begin
 	do {
-		menu(locate, inventory, shopkeep);
+		menu(locate, inventory, shopkeep, name);
 	}
 	while (gameWon != true);
+	killCount.close();
+
 	return 0;
 }
 
@@ -155,6 +162,7 @@ void fight (vector <string> &inventory){
 	if (player.healthCheck(0)){
 		cout << "You have died.\n";
 		gameWon = true;
+		killCount.close();
 	}
 	return ;
 }
@@ -204,7 +212,7 @@ void townUse (vector <string> &inventory){
 }
 
 //Menu that sees which location the player is at and acts accordinglly
-void menu (int &locate, vector <string> &inventory, vector <string> &shopkeep){
+void menu (int &locate, vector <string> &inventory, vector <string> &shopkeep, string name){
 	string input;
 
 	//Town
@@ -240,6 +248,9 @@ void menu (int &locate, vector <string> &inventory, vector <string> &shopkeep){
 		cout << "\nYou are in the forest. A bunny appears!\n";
 		current.bunny(); 
 		fight(inventory);
+		if (current.checkDead()){
+			killCount << name << " killed a bunny.\n";
+		}
 		locate = 0;
 	}
 	//Desert
@@ -247,6 +258,9 @@ void menu (int &locate, vector <string> &inventory, vector <string> &shopkeep){
 		cout << "\nYou are in the desert. A scorpion appears!\n";
 		current.scorpion();
 		fight(inventory); 
+		if (current.checkDead()){
+			killCount << name << " killed a scorpion.\n";
+		}
 		locate = 0;
 	}
 	//Mountains
@@ -254,6 +268,9 @@ void menu (int &locate, vector <string> &inventory, vector <string> &shopkeep){
 		cout << "\nYou are in the mountains. A troll appears!\n";
 		current.troll(); 
 		fight(inventory);
+		if (current.checkDead()){
+			killCount << name << " killed the troll!\n";
+		}
 		locate = 0;
 	}
 	//Graveyard
