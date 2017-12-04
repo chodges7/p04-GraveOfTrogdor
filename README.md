@@ -1,5 +1,5 @@
 # p04-GraveOfTrogdor
-Final project for CSCI 111
+### Final project for CSCI 111
 
   Grave of Trogdor is a text based adventure RPG made entirely through C++. The goal of
 the project is to help prepare me for designing a game in the future. Seeing as my minor 
