@@ -2,24 +2,24 @@
 
 using namespace std;
 
-int Monster::goldOut(){
+int monster::goldOut(){
 	return gold;
 }
 
-int Monster::attackOut(){
+int monster::attackOut(){
 	return attack;
 }
 
-void Monster::setHealth(int delta){
+void monster::setHealth(int delta){
 	health += delta;
 	return ;
 }
 
-int Monster::speedOut(){
+int monster::speedOut(){
 	return speed;
 }
 
-bool Monster::attackCheck(int check){
+bool monster::attackCheck(int check){
 	if (attack == check){
 		return true;
 	}
@@ -28,7 +28,7 @@ bool Monster::attackCheck(int check){
 	}
 }
 
-bool Monster::checkDead(){
+bool monster::checkDead(){
 	if (health <= 0){
 		return true;
 	}
@@ -36,7 +36,7 @@ bool Monster::checkDead(){
 		return false;
 	}
 }
-void Monster::bunny(){
+void monster::bunny(){
 	health = 5;
 	attack = 2;
 	speed = 2;
@@ -44,7 +44,7 @@ void Monster::bunny(){
 	return ;
 }
 
-void Monster::scorpion(){
+void monster::scorpion(){
 	health = 10;
 	attack = 5;
 	speed = 5;
@@ -52,7 +52,7 @@ void Monster::scorpion(){
 	return ;
 }
 
-void Monster::troll(){
+void monster::troll(){
 	health = 35;
 	attack = 7;
 	speed = 5;
