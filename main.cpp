@@ -5,7 +5,7 @@
 #include<ctime>
 #include<cstdlib>
 #include "character.h"
-#include "Monster.h"
+#include "monster.h"
 
 using namespace std;
 
@@ -24,7 +24,7 @@ void townUse(vector <string> &);
 //Bool to track when the game is won
 bool gameWon = false;
 character player;
-Monster current;
+monster current;
 ofstream killCount;
 
 int main(){
