@@ -49,7 +49,8 @@ referenced value returns as a 'q' or 'Q' then the program will stop.
 
   File input/output can be found in [main.cpp at line 58](/main.cpp). Throughout the 
 function the killLog.txt file is open so whenever the player kills a monster, it will be
-logged in the kill log.
+logged in the kill log. Note, if the main.cpp is run then the example kill log already in github
+will be deleted.
 
 ### Class
 
