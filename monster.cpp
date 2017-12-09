@@ -46,9 +46,9 @@ void monster::bunny(){
 
 void monster::scorpion(){
 	health = 10;
-	attack = 5;
+	attack = 4;
 	speed = 5;
-	gold = 20;
+	gold = 30;
 	return ;
 }
 
